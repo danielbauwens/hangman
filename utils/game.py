@@ -10,7 +10,8 @@ class Hangman:
         self.lives = 5
         self.correctly_guessed_letters = list("_"* len(self.word)) 
         self.wrong = []
-        self.wrongly_guessed_letters = set(self.wrong)
+        set(self.wrong)
+        self.wrongly_guessed_letters = self.wrong
         self.turn_count = 0
         self.error_count = len(self.wrongly_guessed_letters)
 
