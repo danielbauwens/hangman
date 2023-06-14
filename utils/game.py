@@ -47,11 +47,11 @@ class Hangman:
         print(f"You found the word {self.word.upper()} in {self.turn_count} turns with {self.error_count} errors!")
 
     def start_game(self):
-        while self.lives != 0:
+        while self.lives is not 0:
             if self.correctly_guessed_letters == self.word_to_find:
                 self.well_played()
             else:
-                while self.lives > 0:
+                while self.lives is not 0:
                     self.play()
         else:
             self.game_over()
