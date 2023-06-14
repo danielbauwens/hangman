@@ -1,25 +1,24 @@
 import random
 # Importing the random library to be able to randomize the guessing word.
 
-
 class Hangman:
     def __init__(self):
         # List of attributes
         self.possible_words = ['becode', 'learning', 'mathematics', 'sessions']
+        self.word = random.choice(self.possible_words)
         self.word_to_find = []
         self.lives = 5
-        self.correctly_guessed_letters = []
+        self.correctly_guessed_letters = list("_"* len(self.word)) 
         self.wrong = []
-        self.wrongly_guessed_letters = set(self.wrong)
+        self.wrongly_guessed_letters = self.wrong
         self.turn_count = 0
         self.error_count = len(self.wrongly_guessed_letters)
 
         ''' Picks a random word from the list and breaks it down into single letters.
         The correct list gets updated to display "_" for every letter in the word'''
-        self.word = random.choice(self.possible_words)
-        for letter in self.word:
-            self.word_to_find.append(letter)
-            self.correctly_guessed_letters.append("_")
+        
+        for l in self.word:
+            self.word_to_find.append(l)
 
     def play(self):
         '''Method to ask user for their guess.
@@ -29,18 +28,20 @@ class Hangman:
         print(f"It's not these words: {self.wrongly_guessed_letters}")
         print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
         guess = input("Please enter a letter to guess:")
-        if len(guess) >= 2 or guess != str:
+        if len(guess) >= 2:
             print("Has to be a letter and cannot be more than one letter. Try again.")
+            print(type(guess), guess)
             self.play()
         else: 
-            for i in self.word:
-                if guess.casefold() != i.casefold():
-                    self.wrong.append(i)
+            for position, letter in enumerate(self.word):
+                if guess.casefold() != letter.casefold():
+                    self.wrong.append(letter)
                 else:
-                    self.correctly_guessed_letters.append(i)
+                    self.correctly_guessed_letters[position] = letter
             self.turn_count += 1
 
     def game_over(self):
+        
         self.lives = 0
         print("Game over...")
 
