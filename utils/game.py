@@ -11,9 +11,10 @@ class Hangman:
         self.word_to_find = []
         for l in self.word:
             self.word_to_find.append(l.lower())
-
+        self.the_end = False
         self.lives = 15
-        self.correctly_guessed_letters = list("_"* len(self.word)) 
+        self.correctly_guessed_letters = list("_"* len(self.word))
+        self.copy = self.correctly_guessed_letters
         self.wrong = []
         self.right = list(dict.fromkeys(self.wrong))
         self.wrongly_guessed_letters = self.right
@@ -24,38 +25,42 @@ class Hangman:
         '''Method to ask user for their guess.
         Putting the guess into the correct category.
         Lastly increasing the turn counter by 1'''
-        print(f"Lives remaining: {self.lives}")
-        print(f"It's not these words: {self.wrongly_guessed_letters}")
-        print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
         guess = input("Please enter a letter to guess:")
         if len(guess) >= 2 or not isinstance(guess, str):
             print("Has to be a letter and cannot be more than one letter. Try again.")
             self.play()
-        else:
-            for w in self.word:
-                if guess.casefold() != w.casefold(): 
-                    self.wrong.append(guess)
-                    self.lives -= 1
+        else: 
+            '''This loop checks the guess in relation to the position of the word you're trying to guess.
+            If correct it will paste the guess in the correct spot.'''
             for position, letter in enumerate(self.word):
                 if guess.casefold() == letter.casefold():
                     self.correctly_guessed_letters[position] = letter
+                else:
+                    continue
+            #Code below only triggered if guess is considered valid. Still part of the "else" condition
             self.turn_count += 1
+            print(f"Lives remaining: {self.lives}")
+            print(f"Current turn: {self.turn_count}")
+            print(f"It's not these words: {self.wrongly_guessed_letters}")
+            print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
 
     def game_over(self):
-        print("Game over...")
+        if self.lives <= 0:
+            print("Game over...")
 
     def well_played(self):
         print(f"You found the word {self.word.upper()} in {self.turn_count} turns with {self.error_count} errors!")
-
+    '''Start loop that continues to play until either the end is triggered (by winning)
+    or the game_over attribute called when no lives are available.'''
     def start_game(self):
-        while self.lives is not 0:
+        while self.the_end == False:
             if self.correctly_guessed_letters == self.word_to_find:
                 self.well_played()
+                self.the_end = True
+            while self.lives != 0:
+                self.play()
             else:
-                while self.lives is not 0:
-                    self.play()
-        else:
-            self.game_over()
+                self.game_over()
         
 
 
