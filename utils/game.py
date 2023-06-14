@@ -10,7 +10,7 @@ class Hangman:
         self.lives = 5
         self.correctly_guessed_letters = list("_"* len(self.word)) 
         self.wrong = []
-        self.wrongly_guessed_letters = self.wrong
+        self.wrongly_guessed_letters = set(self.wrong)
         self.turn_count = 0
         self.error_count = len(self.wrongly_guessed_letters)
 
@@ -28,14 +28,13 @@ class Hangman:
         print(f"It's not these words: {self.wrongly_guessed_letters}")
         print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
         guess = input("Please enter a letter to guess:")
-        if len(guess) >= 2:
+        if len(guess) >= 2 or not isinstance(guess, str):
             print("Has to be a letter and cannot be more than one letter. Try again.")
-            print(type(guess), guess)
             self.play()
         else: 
             for position, letter in enumerate(self.word):
                 if guess.casefold() != letter.casefold():
-                    self.wrong.append(letter)
+                    self.wrong.append(guess)
                 else:
                     self.correctly_guessed_letters[position] = letter
             self.turn_count += 1
