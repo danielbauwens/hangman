@@ -10,13 +10,10 @@ class Hangman:
         self.word = random.choice(self.possible_words)
         self.word_to_find = []
         for l in self.word:
-            self.word_to_find.append(l.lower())
-        self.the_end = False
+            self.word_to_find.append(l)
         self.lives = 5
         self.correctly_guessed_letters = list("_"* len(self.word))
-        self.wrong = []
-        self.right = list(dict.fromkeys(self.wrong))
-        self.wrongly_guessed_letters = self.right
+        self.wrongly_guessed_letters = []
         self.turn_count = 0
         self.error_count = len(self.wrongly_guessed_letters)
 
@@ -45,7 +42,7 @@ class Hangman:
                 pass
             else:
                 self.lives -= 1
-                self.wrong.append(guess)
+                self.wrongly_guessed_letters(guess)
             #Code below only triggered if guess is considered valid. Still part of the "else" condition
             self.turn_count += 1
             print(f"Lives remaining: {self.lives}")
@@ -62,10 +59,11 @@ class Hangman:
     '''Start loop that continues to play until either the end is triggered (by winning)
     or the game_over attribute called when no lives are available.'''
     def start_game(self):
-        while self.the_end == False:
+        the_end = False
+        while the_end == False:
             if self.correctly_guessed_letters == self.word_to_find:
                 self.well_played()
-                self.the_end = True
+                the_end = True
             while self.lives != 0:
                 self.play()
             else:
