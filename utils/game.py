@@ -14,27 +14,29 @@ class Hangman:
         self.lives = 5
         self.correctly_guessed_letters = list("_"* len(self.word))
         self.wrongly_guessed_letters = []
+        self.oopsie = list(set(self.wrongly_guessed_letters))
         self.turn_count = 0
-        self.error_count = len(self.wrongly_guessed_letters)
+        self.error_count = 0
 
     def play(self):
         '''Method to ask user for their guess.
         Putting the guess into the correct category.
         Lastly increasing the turn counter by 1'''
         guess = input("Please enter a letter to guess:")
+        good_guess = True
+        for z in self.oopsie:
+                if guess == z:
+                    print("You already tried this letter. Try another one.")
+                    good_guess = False
+                    self.play()
+                    break
         if len(guess) >= 2 or not isinstance(guess, str):
             print("Has to be a letter and cannot be more than one letter. Try again.")
             self.play()
-        else:
-            for z in self.wrongly_guessed_letters:
-                if guess == z:
-                    print("You already tried this letter. Try another one.")
-                    self.play()
-                else:
-                    pass
+        elif len(guess) < 2 and isinstance(guess, str) and good_guess == True:
             '''Each time a guess goes through, I flag the letter as "False". 
             Then if it's a match I set it to "True", and this way I can send
-                    an output to the wrong letters list and deduct a life when necessary.'''
+            an output to the wrong letters list and deduct a life when necessary.'''
             flagletter = False
             '''This loop checks the guess in relation to the position of the word you're trying to guess.
             If correct it will put the guess in the correct spot(s).'''
@@ -44,17 +46,19 @@ class Hangman:
                     flagletter = True
                 else:
                     continue
-            if flagletter == True:
+            if flagletter == True or good_guess == False:
                 pass
             else:
                 self.lives -= 1
                 self.wrongly_guessed_letters.append(guess)
-        #Code below only triggered if guess is considered valid. Still part of the "else" condition
-        self.turn_count += 1
-        print(f"Lives remaining: {self.lives}")
-        print(f"Current turn: {self.turn_count}")
-        print(f"It's not these words: {self.wrongly_guessed_letters}")
-        print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
+                self.oopsie = list(set(self.wrongly_guessed_letters))
+            #Code below only triggered if guess is considered valid. Still part of the "else" condition
+            self.turn_count += 1
+            self.error_count = len(self.oopsie)
+            print(f"Lives remaining: {self.lives}")
+            print(f"Current turn: {self.turn_count}")
+            print(f"It's not these words: {self.oopsie}")
+            print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
 
     def game_over(self):
         if self.lives <= 0:
@@ -74,8 +78,4 @@ class Hangman:
                 self.play()
             else:
                 self.game_over()
-        
-
-
-
-        
+                the_end = True
