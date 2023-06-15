@@ -12,9 +12,8 @@ class Hangman:
         for l in self.word:
             self.word_to_find.append(l.lower())
         self.the_end = False
-        self.lives = 15
+        self.lives = 5
         self.correctly_guessed_letters = list("_"* len(self.word))
-        self.copy = self.correctly_guessed_letters
         self.wrong = []
         self.right = list(dict.fromkeys(self.wrong))
         self.wrongly_guessed_letters = self.right
@@ -29,14 +28,24 @@ class Hangman:
         if len(guess) >= 2 or not isinstance(guess, str):
             print("Has to be a letter and cannot be more than one letter. Try again.")
             self.play()
-        else: 
+        else:
+            '''Each time a guess goes through, I flag the letter as "False". 
+            Then if it's a match I set it to "True", and this way I can send
+            an output to the wrong letters list and deduct a life when necessary.'''
+            flagletter = False
             '''This loop checks the guess in relation to the position of the word you're trying to guess.
-            If correct it will paste the guess in the correct spot.'''
+            If correct it will put the guess in the correct spot(s).'''
             for position, letter in enumerate(self.word):
                 if guess.casefold() == letter.casefold():
                     self.correctly_guessed_letters[position] = letter
+                    flagletter = True
                 else:
                     continue
+            if flagletter == True:
+                pass
+            else:
+                self.lives -= 1
+                self.wrong.append(guess)
             #Code below only triggered if guess is considered valid. Still part of the "else" condition
             self.turn_count += 1
             print(f"Lives remaining: {self.lives}")
