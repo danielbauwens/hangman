@@ -66,7 +66,7 @@ class Hangman:
     def start_game(self):
         the_end = False
         while the_end is False:
-            if ''.join(self.correctly_guessed_letters.casefold) == ''.join(self.word_to_find).casefold():
+            if ''.join(self.correctly_guessed_letters).casefold() == ''.join(self.word_to_find).casefold():
                 self.well_played()
                 the_end = True
             elif self.lives != 0:
