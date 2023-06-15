@@ -22,16 +22,18 @@ class Hangman:
         '''Method to ask user for their guess.
         Putting the guess into the correct category.
         Lastly increasing the turn counter by 1'''
-        guess = input("Please enter a letter to guess:")
+        guess = input("\nPlease enter a letter to guess:")
         good_guess = True
-        for z in self.oopsie:
-                if guess == z:
-                    print("You already tried this letter. Try another one.")
-                    good_guess = False
-                    self.play()
-                    break
+        if guess in self.wrongly_guessed_letters:
+            print("\nYou already tried this letter. Try another one.")
+            good_guess = False
+            self.play()
+        elif guess in self.correctly_guessed_letters:
+            print("\nYou already tried this letter succesfully. Find the next one.")
+            self.play()
+
         if len(guess) >= 2 or not isinstance(guess, str) or not guess.isalpha():
-            print("Has to be a letter and cannot be more than one letter. Try again.")
+            print("\nHas to be a letter and cannot be more than one letter. Try again.\n")
             self.play()
         elif len(guess) < 2 and isinstance(guess, str) and good_guess == True:
             '''Each time a guess goes through, I flag the letter as "False". 
@@ -55,7 +57,7 @@ class Hangman:
             #Code below only triggered if guess is considered valid. Still part of the "else" condition
             self.turn_count += 1
             self.error_count = len(self.oopsie)
-            print(f"Lives remaining: {self.lives}")
+            print(f"\nLives remaining: {self.lives}")
             print(f"Current turn: {self.turn_count}")
             print(f"It's not these words: {self.oopsie}")
             print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
