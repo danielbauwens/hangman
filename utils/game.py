@@ -42,7 +42,7 @@ class Hangman:
                 pass
             else:
                 self.lives -= 1
-                self.wrongly_guessed_letters(guess)
+                self.wrongly_guessed_letters.append(guess)
             #Code below only triggered if guess is considered valid. Still part of the "else" condition
             self.turn_count += 1
             print(f"Lives remaining: {self.lives}")
