@@ -30,7 +30,7 @@ class Hangman:
                     good_guess = False
                     self.play()
                     break
-        if len(guess) >= 2 or not isinstance(guess, str):
+        if len(guess) >= 2 or not isinstance(guess, str) or not guess.isalpha():
             print("Has to be a letter and cannot be more than one letter. Try again.")
             self.play()
         elif len(guess) < 2 and isinstance(guess, str) and good_guess == True:
@@ -59,6 +59,7 @@ class Hangman:
             print(f"Current turn: {self.turn_count}")
             print(f"It's not these words: {self.oopsie}")
             print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
+        
 
     def game_over(self):
         if self.lives <= 0:
@@ -66,6 +67,7 @@ class Hangman:
 
     def well_played(self):
         print(f"You found the word {self.word.upper()} in {self.turn_count} turns with {self.error_count} errors!")
+    
     '''Start loop that continues to play until either the end is triggered (by winning)
     or the game_over attribute called when no lives are available.'''
     def start_game(self):
