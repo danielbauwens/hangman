@@ -26,29 +26,34 @@ class Hangman:
             print("Has to be a letter and cannot be more than one letter. Try again.")
             self.play()
         else:
-            '''Each time a guess goes through, I flag the letter as "False". 
-            Then if it's a match I set it to "True", and this way I can send
-            an output to the wrong letters list and deduct a life when necessary.'''
-            flagletter = False
-            '''This loop checks the guess in relation to the position of the word you're trying to guess.
-            If correct it will put the guess in the correct spot(s).'''
-            for position, letter in enumerate(self.word):
-                if guess.casefold() == letter.casefold():
-                    self.correctly_guessed_letters[position] = letter
-                    flagletter = True
+            for z in self.wrongly_guessed_letters:
+                if guess == z:
+                    print("You already tried this letter. Try another one.")
+                    self.play()
                 else:
-                    continue
-            if flagletter == True:
-                pass
-            else:
-                self.lives -= 1
-                self.wrongly_guessed_letters.append(guess)
-            #Code below only triggered if guess is considered valid. Still part of the "else" condition
-            self.turn_count += 1
-            print(f"Lives remaining: {self.lives}")
-            print(f"Current turn: {self.turn_count}")
-            print(f"It's not these words: {self.wrongly_guessed_letters}")
-            print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
+                    '''Each time a guess goes through, I flag the letter as "False". 
+                    Then if it's a match I set it to "True", and this way I can send
+                    an output to the wrong letters list and deduct a life when necessary.'''
+                    flagletter = False
+                    '''This loop checks the guess in relation to the position of the word you're trying to guess.
+                    If correct it will put the guess in the correct spot(s).'''
+                    for position, letter in enumerate(self.word):
+                        if guess.casefold() == letter.casefold():
+                            self.correctly_guessed_letters[position] = letter
+                            flagletter = True
+                        else:
+                            continue
+                    if flagletter == True:
+                        pass
+                    else:
+                        self.lives -= 1
+                        self.wrongly_guessed_letters.append(guess)
+                    #Code below only triggered if guess is considered valid. Still part of the "else" condition
+                    self.turn_count += 1
+                    print(f"Lives remaining: {self.lives}")
+                    print(f"Current turn: {self.turn_count}")
+                    print(f"It's not these words: {self.wrongly_guessed_letters}")
+                    print(f"This is the word you're looking for: {self.correctly_guessed_letters}")
 
     def game_over(self):
         if self.lives <= 0:
@@ -60,11 +65,11 @@ class Hangman:
     or the game_over attribute called when no lives are available.'''
     def start_game(self):
         the_end = False
-        while the_end == False:
-            if self.correctly_guessed_letters == self.word_to_find:
+        while the_end is False:
+            if ''.join(self.correctly_guessed_letters.casefold) == ''.join(self.word_to_find).casefold():
                 self.well_played()
                 the_end = True
-            while self.lives != 0:
+            elif self.lives != 0:
                 self.play()
             else:
                 self.game_over()
